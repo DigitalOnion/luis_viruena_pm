@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="app_title">Popular Movies</string>
+
+    <!-- Settings menu - sort order -->
+    <string name="sort_by">Sort by</string>
+    <string name="sort_highest_rated">Highest Rated</string>
+    <string name="sort_most_popular">Most Popular</string>
+
+    <string name="user_rating">User Rating: </string>
+    <string name="release_date">Release Date: </string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce condimentum libero id enim tincidunt molestie. Nullam facilisis nunc ex, ac interdum urna pellentesque rhoncus. Ut aliquet lorem a libero varius.</string>
+</resources>
