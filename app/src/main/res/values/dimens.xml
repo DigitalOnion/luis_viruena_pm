@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="first_level_elevation">1dp</dimen>
+    <dimen name="progress_bar_diameter">75dp</dimen>
+
+    <dimen name="app_padding">16dp</dimen>
+    <dimen name="normal_margin">8dp</dimen>
+    <dimen name="extra_margin">16dp</dimen>
+    <dimen name="wide_margin">24dp</dimen>
+    <dimen name="extra_wide_margin">32dp</dimen>
+</resources>

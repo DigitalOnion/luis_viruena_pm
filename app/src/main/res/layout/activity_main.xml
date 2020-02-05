@@ -8,9 +8,9 @@
 
     <ProgressBar
         android:id="@+id/progress"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:elevation="1dp"
+        android:layout_width="@dimen/progress_bar_diameter"
+        android:layout_height="@dimen/progress_bar_diameter"
+        android:elevation="@dimen/first_level_elevation"
         android:layout_gravity="center"/>
 
     <androidx.recyclerview.widget.RecyclerView

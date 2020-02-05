@@ -38,8 +38,8 @@ public class MovieModel {
     private static final String US_ENGLISH = "en-US";
 
     private static final String API_BASE_URL = "https://api.themoviedb.org/";
-    private static final String TOP_RATED_ENDPOINT = "3/movie/top_rated/";
-    private static final String POPULAR_ENDPOINT = "3/movie/popular/";
+    private static final String TOP_RATED_ENDPOINT = "3/movie/top_rated";
+    private static final String POPULAR_ENDPOINT = "3/movie/popular";
 
     private static final String POSTER_BASE_URL = "http://image.tmdb.org/";
     private static final String POSTER_ENDPOINT = "t/p/";

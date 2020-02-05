@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -35,27 +36,22 @@ class NetworkUtils {
     static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
+        connection.setConnectTimeout(2000);
         connection.connect();
 
         int responseCode = connection.getResponseCode();
-
-        boolean redirect = responseCode != HttpURLConnection.HTTP_OK
-                && (responseCode == HttpURLConnection.HTTP_MOVED_PERM
-                    || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-                    || responseCode == HttpURLConnection.HTTP_SEE_OTHER);
-
-        BufferedReader inBuffer;
-        if(!redirect) {
-            inBuffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        } else {
-            String redirectedUrl = connection.getHeaderField("Location");
-            HttpURLConnection redirectedConnection = (HttpURLConnection) new URL(redirectedUrl).openConnection();
-            redirectedConnection.setRequestMethod("GET");
-            redirectedConnection.connect();
-
-            inBuffer = new BufferedReader(new InputStreamReader(redirectedConnection.getInputStream()));
+        if(responseCode != HttpURLConnection.HTTP_OK) {
+            throw new ConnectException(String.format("Could not connect to %s", url.toString()));
         }
-        String response = inBuffer.lines().collect(Collectors.joining());
+        BufferedReader inBuffer;
+        inBuffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        do {
+            line = inBuffer.readLine();
+            sb.append(line);
+        } while(line != null);
+        String response = sb.toString(); // the construct: inBuffer.lines().collect(Collectors.joining()); is not valid in api < 24
         connection.disconnect();
         return response;
     }
