@@ -15,13 +15,13 @@ import com.outerspace.movies.model.api.Movie;
 
 import java.util.List;
 
-public class MovieGridAdapter extends RecyclerView.Adapter <MovieGridAdapter.MovieViewHolder> {
+public class MainGridAdapter extends RecyclerView.Adapter <MainGridAdapter.MovieViewHolder> {
     private MainPresenter presenter;
     private List<Movie> movies;
 
-    private MovieGridAdapter() { }
+    private MainGridAdapter() { }
 
-    MovieGridAdapter(MainPresenter presenter) {
+    MainGridAdapter(MainPresenter presenter) {
         this.presenter = presenter;
     }
 

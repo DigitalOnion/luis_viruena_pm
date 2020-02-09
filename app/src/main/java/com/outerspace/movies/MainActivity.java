@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private static final int GRID_COLUMN_COUNT = 3;
     RecyclerView recycler;
     ProgressBar progressBar;
-    MovieGridAdapter adapter;
+    MainGridAdapter adapter;
 
     MainPresenter presenter;
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         recycler.setLayoutManager(new GridLayoutManager(this, GRID_COLUMN_COUNT));
 
         presenter = new MainPresenter(this);
-        adapter = new MovieGridAdapter(presenter);
+        adapter = new MainGridAdapter(presenter);
         presenter.presentMostPopular(adapter);
     }
 

@@ -23,15 +23,15 @@ class MainPresenter {
         }
     };
 
-    void presentMostPopular(final MovieGridAdapter adapter) {
+    void presentMostPopular(final MainGridAdapter adapter) {
         MovieModel.getPopularMovies(uiWaitingCallback, getMovieCallback(adapter));
     }
 
-    void presentTopRated(final MovieGridAdapter adapter) {
+    void presentTopRated(final MainGridAdapter adapter) {
         MovieModel.getTopRatedMovies(uiWaitingCallback, getMovieCallback(adapter));
     }
 
-    private MovieModel.MovieCallback getMovieCallback(final MovieGridAdapter adapter) {
+    private MovieModel.MovieCallback getMovieCallback(final MainGridAdapter adapter) {
         return new MovieModel.MovieCallback() {
             @Override
             public void callback(List<Movie> movieListResult) {

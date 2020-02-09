@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">PopularMovies</string>
-    <string name="app_title">Popular Movies</string>
+    <string name="app_title">Pop Movies</string>
 
     <!-- Settings menu - sort order -->
     <string name="sort_by">Sort by</string>
     <string name="sort_highest_rated">Highest Rated</string>
     <string name="sort_most_popular">Most Popular</string>
 
+    <!-- Details menu -->
+    <string name="details_menu">details</string>
+
+    <!-- others -->
     <string name="movie_poster">Movie poster</string>
     <string name="user_rating">User Rating: </string>
     <string name="release_date">Release Date: </string>

@@ -1,10 +1,7 @@
 package com.outerspace.movies.model;
 
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ProgressBar;
 
-import com.outerspace.movies.MovieGridAdapter;
 import com.outerspace.movies.model.api.Movie;
 
 import org.json.JSONArray;
@@ -34,7 +31,7 @@ public class MovieModel {
     private static final String LANGUAGE = "language";
     private static final String PAGE = "page";
 
-    private static final String API_KEY_VALUE = "place-here-your-api-key";
+    private static final String API_KEY_VALUE = "6ede68890852274974d5af2c4941796e";
     private static final String US_ENGLISH = "en-US";
 
     private static final String API_BASE_URL = "https://api.themoviedb.org/";

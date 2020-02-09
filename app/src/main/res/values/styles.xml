@@ -10,11 +10,13 @@
 
     <style name="details_title">
         <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:paddingTop">@dimen/extra_margin</item>
+        <item name="android:paddingBottom">@dimen/extra_wide_margin</item>
     </style>
     <style name="details_overview">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/paragraph_text_size</item>
         <item name="android:textColor">@color/dark_gray</item>
     </style>
 
