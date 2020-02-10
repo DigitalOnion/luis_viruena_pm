@@ -11,6 +11,7 @@
     <string name="details_menu">details</string>
 
     <!-- others -->
+    <string name="mark_as_favorite">Mark it as favorite</string>
     <string name="movie_poster">Movie poster</string>
     <string name="user_rating">User Rating: </string>
     <string name="release_date">Release Date: </string>

@@ -14,46 +14,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieModel {
+public class MovieModel extends BaseMovieModel {
 
     public interface MovieCallback {
         void callback(List<Movie> movieListResult);
     }
-
-    public interface UiWaitingCallback {
-        void callback(boolean uiWaiting);
-    }
-
-    public static final String POSTER_SIZE = "w185";
-    public static final String POSTER_SIZE_BIG = "w780";
-
-    private static final String API_KEY = "api_key";
-    private static final String LANGUAGE = "language";
-    private static final String PAGE = "page";
-
-    private static final String API_KEY_VALUE = "6ede68890852274974d5af2c4941796e";
-    private static final String US_ENGLISH = "en-US";
-
-    private static final String API_BASE_URL = "https://api.themoviedb.org/";
-    private static final String TOP_RATED_ENDPOINT = "3/movie/top_rated";
-    private static final String POPULAR_ENDPOINT = "3/movie/popular";
-
-    private static final String POSTER_BASE_URL = "http://image.tmdb.org/";
-    private static final String POSTER_ENDPOINT = "t/p/";
-
-
-    private static String getApiKey() {
-        return API_KEY + "=" + API_KEY_VALUE;
-    }
-
-    private static String getLanguage() {
-        return LANGUAGE + "=" + US_ENGLISH;
-    }
-
-    private static String getPage(int page) {
-        return PAGE + "=" + page;
-    }
-
 
     public static void getPopularMovies(UiWaitingCallback uiWaitingCallback, MovieCallback movieCallback) {
         getMovieList(uiWaitingCallback, movieCallback,
@@ -81,7 +46,7 @@ public class MovieModel {
 
                 @Override
                 protected List<Movie> doInBackground(URL... urls) {
-                    return getMovieListResponse(urls[0]);
+                    return getMovieListFromURL(urls[0]);
                 }
 
                 @Override
@@ -95,7 +60,7 @@ public class MovieModel {
         }
     }
 
-    private static List<Movie> getMovieListResponse(URL movieUrl) {
+    private static List<Movie> getMovieListFromURL(URL movieUrl) {
         List<Movie> movieList = new ArrayList<>();
         try {
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(movieUrl);

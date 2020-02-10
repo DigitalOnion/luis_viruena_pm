@@ -8,12 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="details_title">
+    <style name="details_release_date">
         <item name="android:fontFamily">sans-serif-black</item>
         <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:paddingTop">@dimen/extra_margin</item>
         <item name="android:paddingBottom">@dimen/extra_wide_margin</item>
     </style>
+
     <style name="details_overview">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">@dimen/paragraph_text_size</item>

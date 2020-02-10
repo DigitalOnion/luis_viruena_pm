@@ -9,15 +9,12 @@ import androidx.core.widget.NestedScrollView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.outerspace.movies.model.MovieModel;
 import com.outerspace.movies.model.api.Movie;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView {
@@ -26,6 +23,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private Toolbar toolbar;
     private ImageView imageMoviePoster;
     private CollapsingToolbarLayout collapsingToolbar;
+    private TextView textHeader;
     private TextView textOverview;
 
     @Override
@@ -35,25 +33,28 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         Intent intent = getIntent();
         Movie movie = intent.getParcelableExtra(MainPresenter.MOVIE);
-        presenter = new MovieDetailPresenter(this, movie);
+        presenter = new MovieDetailPresenter(this);
 
-        initReferenes();
-        setSupportActionBar(toolbar);
+        setupActionBar();
+        initReferences();
 
-        presenter.initValues();
+        presenter.presentMovieDetail(movie);
     }
 
-    private void initReferenes() {
+    private void setupActionBar() {
         toolbar = findViewById(R.id.toolbar);
-
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
 
+    private void initReferences() {
         ConstraintLayout includedLayout = findViewById(R.id.include_collapsing_toolbar_detail);
         imageMoviePoster = includedLayout.findViewById(R.id.movie_poster_image);
+        textHeader = includedLayout.findViewById(R.id.header_text);
 
         NestedScrollView includedScroll = findViewById(R.id.include_body_detail);
         textOverview = includedScroll.findViewById(R.id.overview);
@@ -83,23 +84,13 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         return true;
     }
 
-    @Override
-    public Toolbar getToolbar() {
-        return toolbar;
-    }
+    @Override public Toolbar getToolbar() { return toolbar; }
 
-    @Override
-    public TextView getTextOverview() {
-        return textOverview;
-    }
+    @Override public TextView getTextOverview() { return textOverview; }
 
-    @Override
-    public ImageView getImageMoviePoster() {
-        return imageMoviePoster;
-    }
+    @Override public ImageView getImageMoviePoster() { return imageMoviePoster; }
 
-    @Override
-    public CollapsingToolbarLayout getCollapsingToolbar() {
-        return collapsingToolbar;
-    }
+    @Override public CollapsingToolbarLayout getCollapsingToolbar() { return collapsingToolbar; }
+
+    @Override public TextView getTextHeader() { return textHeader; }
 }

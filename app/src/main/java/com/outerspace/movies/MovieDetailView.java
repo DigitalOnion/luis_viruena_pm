@@ -11,7 +11,8 @@ import com.outerspace.movies.model.api.Movie;
 
 public interface MovieDetailView {
     Toolbar getToolbar();
-    TextView getTextOverview();
     ImageView getImageMoviePoster();
     CollapsingToolbarLayout getCollapsingToolbar();
+    TextView getTextHeader();
+    TextView getTextOverview();
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.outerspace.movies.model.MovieModel;
+import com.outerspace.movies.model.UiWaitingCallback;
 import com.outerspace.movies.model.api.Movie;
 
 import java.util.List;
@@ -16,7 +17,7 @@ class MainPresenter {
         this.mainView = mainView;
     }
 
-    private MovieModel.UiWaitingCallback uiWaitingCallback = new MovieModel.UiWaitingCallback() {
+    private UiWaitingCallback uiWaitingCallback = new UiWaitingCallback() {
         @Override
         public void callback(boolean uiWaiting) {
             mainView.getProgressBar().setVisibility(uiWaiting ? View.VISIBLE : View.INVISIBLE);
