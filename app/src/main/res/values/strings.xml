@@ -6,6 +6,14 @@
     <string name="sort_by">Sort by</string>
     <string name="sort_highest_rated">Highest Rated</string>
     <string name="sort_most_popular">Most Popular</string>
+    <string name="sort_favorites">Favorites</string>
+    <string name="settings_clear_favorites">Clear favorites</string>
+
+    <!-- Clear Favorites dialog-->
+    <string name="clear_favorites_title">Clear Favorites</string>
+    <string name="clear_favorites_message">Do you want to clear all your \'favorites\' selection.</string>
+    <string name="clear_favorites_clear">Clear Favorites</string>
+    <string name="clear_favorites_cancel">Cancel</string>
 
     <!-- Details menu -->
     <string name="details_menu">details</string>

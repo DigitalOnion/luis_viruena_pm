@@ -6,16 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="@dimen/progress_bar_diameter"
-        android:layout_height="@dimen/progress_bar_diameter"
-        android:elevation="@dimen/first_level_elevation"
-        android:layout_gravity="center"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grid_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="@dimen/progress_bar_diameter"
+        android:layout_height="@dimen/progress_bar_diameter"
+        android:layout_gravity="center"/>
 
 </FrameLayout>

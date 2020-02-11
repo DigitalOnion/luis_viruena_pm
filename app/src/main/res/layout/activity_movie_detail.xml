@@ -40,4 +40,11 @@
         android:id="@+id/include_body_detail"
         layout="@layout/detail_nested_scroll_body"/>
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="@dimen/progress_bar_diameter"
+        android:layout_height="@dimen/progress_bar_diameter"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

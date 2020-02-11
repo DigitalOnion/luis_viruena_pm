@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
             case R.id.sort_highest_rated:
                 presenter.presentTopRated(adapter);
                 return true;
+            case R.id.sort_favorites:
+                presenter.presentFavorites(adapter);
+                return true;
+            case R.id.settings_clear_favorites:
+                presenter.clearFavorites(this.getContext());
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

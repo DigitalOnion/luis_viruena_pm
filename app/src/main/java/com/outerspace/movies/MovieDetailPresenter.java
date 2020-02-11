@@ -9,6 +9,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,18 +29,24 @@ public class MovieDetailPresenter {
     MovieDetailView detailView;
     Movie movie;
 
-    private final UiWaitingCallback waitingCallback = new UiWaitingCallback() {
-        @Override
-        public void callback(boolean uiWaiting) {
-            // Todo: Implement
-        }
-    };
+//    private final UiWaitingCallback waitingCallback = new UiWaitingCallback() {
+//        @Override
+//        public void callback(boolean uiWaiting) {
+//            // Todo: Implement
+//        }
+//    };
+
+
+    private void activateProgressBar(boolean active) {
+        detailView.getProgressBar().setVisibility(active ? View.VISIBLE : View.INVISIBLE);
+    }
 
     private final MovieDetailModel.MovieDetailCallback detailCallback = new MovieDetailModel.MovieDetailCallback() {
         @Override
         public void callback(MovieDetail detail) {
             chooseMarkedAsFavoriteIcon(detailView, detail.favorite);
             initValues(detail);
+            activateProgressBar(false);
         }
     };
 
@@ -51,13 +58,11 @@ public class MovieDetailPresenter {
     static class PresentMovieDetailTask extends AsyncTask<Movie, Void, Movie> {
         private MovieDetailView detailView;
         private Movie movie;
-        private UiWaitingCallback waitingCallback;
         private MovieDetailModel.MovieDetailCallback detailCallback;
 
-        public PresentMovieDetailTask(MovieDetailView detailView, Movie movie, UiWaitingCallback waitingCallback, MovieDetailModel.MovieDetailCallback detailCallback) {
+        public PresentMovieDetailTask(MovieDetailView detailView, Movie movie, MovieDetailModel.MovieDetailCallback detailCallback) {
             this.detailView = detailView;
             this.movie = movie;
-            this.waitingCallback = waitingCallback;
             this.detailCallback = detailCallback;
         }
 
@@ -75,13 +80,14 @@ public class MovieDetailPresenter {
 
         @Override
         protected void onPostExecute(Movie movie) {
-            MovieDetailModel.getMovieDetail(movie, waitingCallback, detailCallback);
+            MovieDetailModel.getMovieDetail(movie, detailCallback);
         }
     }
 
     void presentMovieDetail(Movie movie) {
+        activateProgressBar(true);
         this.movie = movie;
-        PresentMovieDetailTask task = new PresentMovieDetailTask(detailView, movie, waitingCallback, detailCallback);
+        PresentMovieDetailTask task = new PresentMovieDetailTask(detailView, movie, detailCallback);
         task.execute(movie);
         chooseMarkedAsFavoriteIcon(detailView, movie.favorite);
     }

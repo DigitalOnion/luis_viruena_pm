@@ -5,7 +5,11 @@ import android.os.AsyncTask;
 
 import androidx.room.Room;
 
+import com.outerspace.movies.model.MovieModel;
+import com.outerspace.movies.model.UiWaitingCallback;
 import com.outerspace.movies.model.api.Movie;
+
+import java.util.List;
 
 public class MovieRepository {
     private static final String MOVIE_DB_NAME = "movieDatabase";
@@ -25,6 +29,29 @@ public class MovieRepository {
 
     public interface MovieRepositoryCallback<T> {
         void call(T result);
+    }
+
+    private static class SelectFavoritesTask extends AsyncTask<Void, Void, List<Movie>> {
+        MovieModel.MovieCallback movieCallback;
+
+        public SelectFavoritesTask(MovieModel.MovieCallback movieCallback) {
+            this.movieCallback = movieCallback;
+        }
+
+        @Override
+        protected List<Movie> doInBackground(Void... voids) {
+            return movieDatabase.movieDao().selectFavorites();
+        }
+
+        @Override
+        protected void onPostExecute(List<Movie> movies) {
+            movieCallback.callback(movies);
+        }
+    }
+
+    public static void getFavoriteMovies(MovieModel.MovieCallback movieCallback) {
+        SelectFavoritesTask task = new SelectFavoritesTask(movieCallback);
+        task.execute();
     }
 
     private static class IsFavoriteTask extends AsyncTask<Integer, Void, Boolean> {
@@ -93,4 +120,16 @@ public class MovieRepository {
     public void insert(Movie movie) {
         movieDatabase.movieDao().insert(movie);
     };
+
+    private static class ClearAllMoviesTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            movieDatabase.movieDao().clearAllMovies();
+            return null;
+        }
+    }
+
+    public static void clearAllMoviesAsync() {
+        new ClearAllMoviesTask().execute();
+    }
 }

@@ -25,29 +25,25 @@ public class MovieModel extends BaseMovieModel {
         void callback(List<Movie> movieListResult);
     }
 
-    public static void getPopularMovies(UiWaitingCallback uiWaitingCallback, MovieCallback movieCallback) {
-        getMovieList(uiWaitingCallback, movieCallback,
+    public static void getPopularMovies(MovieCallback movieCallback) {
+        getMovieList(movieCallback,
                 API_BASE_URL + POPULAR_ENDPOINT + "?"
                         + getApiKey() + "&"
                         + getLanguage() + "&"
                         + getPage(1));
     }
 
-    public static void getTopRatedMovies(UiWaitingCallback uiWaitingCallback, MovieCallback movieCallback) {
-        getMovieList(uiWaitingCallback, movieCallback,
+    public static void getTopRatedMovies(MovieCallback movieCallback) {
+        getMovieList(movieCallback,
                 API_BASE_URL + TOP_RATED_ENDPOINT + "?"
                         + getApiKey() + "&"
                         + getLanguage() + "&"
                         + getPage(1));
     }
 
-    private static void getMovieList(final UiWaitingCallback uiWaitingCallback, final MovieCallback movieCallback, String urlString) {
+    private static void getMovieList(final MovieCallback movieCallback, String urlString) {
         try {
             new AsyncTask<URL, Void, List<Movie>>() {
-                @Override
-                protected void onPreExecute() {
-                    uiWaitingCallback.callback(true);
-                }
 
                 @Override
                 protected List<Movie> doInBackground(URL... urls) {
@@ -57,7 +53,6 @@ public class MovieModel extends BaseMovieModel {
                 @Override
                 protected void onPostExecute(List<Movie> movieList) {
                     movieCallback.callback(movieList);
-                    uiWaitingCallback.callback(false);
                 }
             }.execute(new URL(urlString));
         } catch (MalformedURLException e) {

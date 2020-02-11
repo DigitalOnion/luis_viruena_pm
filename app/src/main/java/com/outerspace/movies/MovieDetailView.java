@@ -2,6 +2,7 @@ package com.outerspace.movies;
 
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -16,4 +17,5 @@ public interface MovieDetailView {
     TextView getTextHeader();
     TextView getTextOverview();
     ImageButton getMarkAsFavoriteButton();
+    ProgressBar getProgressBar();
 }

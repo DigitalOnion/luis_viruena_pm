@@ -18,15 +18,10 @@ public class MovieDetailModel extends BaseMovieModel {
         void callback(MovieDetail detail);
     }
 
-    public static void getMovieDetail(final Movie movie, final UiWaitingCallback uiWaitingCallback, final MovieDetailCallback movieDetailCallback) {
+    public static void getMovieDetail(final Movie movie, final MovieDetailCallback movieDetailCallback) {
         String urlString = getDetailEndpoint(movie.id);
         try {
             new AsyncTask<URL, Void, MovieDetail>() {
-                @Override
-                protected void onPreExecute() {
-                    uiWaitingCallback.callback(true);
-                }
-
                 @Override
                 protected MovieDetail doInBackground(URL... urls) {
                     return getMovieDetailFromURL(urls[0]);
@@ -36,7 +31,6 @@ public class MovieDetailModel extends BaseMovieModel {
                 protected void onPostExecute(MovieDetail movieDetail) {
                     movieDetail.favorite = movie.favorite;
                     movieDetailCallback.callback(movieDetail);
-                    uiWaitingCallback.callback(false);
                 }
             }.execute(new URL(urlString));
         } catch (MalformedURLException e) {

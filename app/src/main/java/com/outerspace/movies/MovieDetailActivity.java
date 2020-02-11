@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -29,6 +30,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private TextView textOverview;
     private ImageButton buttonMarkAsFavorite;
     private TextView textMarkAsFavorite;
+    private ProgressBar progressBar;
 
 //    private MovieDatabase movieDb;
 
@@ -76,6 +78,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         textOverview = includedScroll.findViewById(R.id.overview);
 
         collapsingToolbar = findViewById(R.id.collapsing_toolbar_layout);
+        progressBar = findViewById(R.id.progress);
     }
 
     @Override
@@ -111,4 +114,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override public TextView getTextHeader() { return textHeader; }
 
     @Override public ImageButton getMarkAsFavoriteButton() { return buttonMarkAsFavorite; }
+
+    @Override public ProgressBar getProgressBar() { return progressBar; }
 }
