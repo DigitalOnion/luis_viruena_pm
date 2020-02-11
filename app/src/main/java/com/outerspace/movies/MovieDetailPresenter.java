@@ -1,12 +1,18 @@
 package com.outerspace.movies;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.outerspace.movies.model.MovieDetailModel;
@@ -14,20 +20,25 @@ import com.outerspace.movies.model.MovieModel;
 import com.outerspace.movies.model.UiWaitingCallback;
 import com.outerspace.movies.model.api.Movie;
 import com.outerspace.movies.model.api.MovieDetail;
+import com.outerspace.movies.model.persistence.MovieRepository;
+
+import java.lang.ref.WeakReference;
 
 public class MovieDetailPresenter {
     MovieDetailView detailView;
+    Movie movie;
 
-    private UiWaitingCallback waitingCallback = new UiWaitingCallback() {
+    private final UiWaitingCallback waitingCallback = new UiWaitingCallback() {
         @Override
         public void callback(boolean uiWaiting) {
             // Todo: Implement
         }
     };
 
-    private MovieDetailModel.MovieDetailCallback detailCallback = new MovieDetailModel.MovieDetailCallback() {
+    private final MovieDetailModel.MovieDetailCallback detailCallback = new MovieDetailModel.MovieDetailCallback() {
         @Override
         public void callback(MovieDetail detail) {
+            chooseMarkedAsFavoriteIcon(detailView, detail.favorite);
             initValues(detail);
         }
     };
@@ -37,11 +48,45 @@ public class MovieDetailPresenter {
         this.detailView = detailView;
     }
 
-    void presentMovieDetail(Movie movie) {
-        MovieDetailModel.getMovieDetail(movie.id, waitingCallback, detailCallback);
+    static class PresentMovieDetailTask extends AsyncTask<Movie, Void, Movie> {
+        private MovieDetailView detailView;
+        private Movie movie;
+        private UiWaitingCallback waitingCallback;
+        private MovieDetailModel.MovieDetailCallback detailCallback;
+
+        public PresentMovieDetailTask(MovieDetailView detailView, Movie movie, UiWaitingCallback waitingCallback, MovieDetailModel.MovieDetailCallback detailCallback) {
+            this.detailView = detailView;
+            this.movie = movie;
+            this.waitingCallback = waitingCallback;
+            this.detailCallback = detailCallback;
+        }
+
+        @Override
+        protected Movie doInBackground(Movie... movies) {
+            Movie movie = movies[0];
+            if (MovieRepository.getInstance().isMovieStored(movie.id)) {
+                movie = MovieRepository.getInstance().getMovieFromId(movie.id);
+            } else {
+                MovieRepository.getInstance().insert(movie);
+                MovieRepository.getInstance().flipFavorite(movie.id);
+            }
+            return movie;
+        }
+
+        @Override
+        protected void onPostExecute(Movie movie) {
+            MovieDetailModel.getMovieDetail(movie, waitingCallback, detailCallback);
+        }
     }
 
-    void initValues(MovieDetail detail) {
+    void presentMovieDetail(Movie movie) {
+        this.movie = movie;
+        PresentMovieDetailTask task = new PresentMovieDetailTask(detailView, movie, waitingCallback, detailCallback);
+        task.execute(movie);
+        chooseMarkedAsFavoriteIcon(detailView, movie.favorite);
+    }
+
+    private void initValues(MovieDetail detail) {
         String imageUrl = MovieModel.getPosterPathURL(MovieModel.POSTER_SIZE_BIG, detail.posterPath);
 
         detailView.getCollapsingToolbar().setTitle(detail.originalTitle);
@@ -74,7 +119,24 @@ public class MovieDetailPresenter {
         detailView.getTextHeader().setText(spanBuilder);
 
         detailView.getTextOverview().setText(detail.overview);
-//        ((TextView)findViewById(R.id.release_date)).setText(movie.releaseDate);
-//        ((TextView)findViewById(R.id.vote_average)).setText(String.valueOf(movie.voteAverage));
+    }
+
+    private void chooseMarkedAsFavoriteIcon(MovieDetailView detailView, boolean favorite) {
+        Resources resources = ((MovieDetailActivity) detailView).getResources();
+        Resources.Theme theme = ((MovieDetailActivity) detailView).getBaseContext().getTheme();
+        Drawable drawable = resources.getDrawable(favorite
+                ? R.drawable.ic_favorite
+                : R.drawable.ic_favorite_border);
+        detailView.getMarkAsFavoriteButton().setImageDrawable(drawable);
+    }
+
+    public void onMarkAsFavorite() {
+        MovieRepository.getInstance().flipFavoriteAsync(movie.id, new MovieRepository.MovieRepositoryCallback <Boolean> () {
+            @Override
+            public void call (Boolean favorite){
+                movie.favorite = favorite;
+                chooseMarkedAsFavoriteIcon(detailView, movie.favorite);
+            }
+        });
     }
 }

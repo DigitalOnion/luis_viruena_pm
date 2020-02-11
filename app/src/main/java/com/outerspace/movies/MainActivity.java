@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
+import com.outerspace.movies.model.persistence.MovieRepository;
+
 public class MainActivity extends AppCompatActivity implements MainView {
     private static final int GRID_COLUMN_COUNT = 3;
     RecyclerView recycler;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MovieRepository.initialize(this.getApplicationContext());      // initialize movie repository
 
         progressBar = findViewById(R.id.progress);
         recycler = findViewById(R.id.grid_recycler);

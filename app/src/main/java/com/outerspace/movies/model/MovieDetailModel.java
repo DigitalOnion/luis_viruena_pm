@@ -2,6 +2,7 @@ package com.outerspace.movies.model;
 
 import android.os.AsyncTask;
 
+import com.outerspace.movies.model.api.Movie;
 import com.outerspace.movies.model.api.MovieDetail;
 
 import org.json.JSONArray;
@@ -17,8 +18,8 @@ public class MovieDetailModel extends BaseMovieModel {
         void callback(MovieDetail detail);
     }
 
-    public static void getMovieDetail(int idMovie, final UiWaitingCallback uiWaitingCallback, final MovieDetailCallback movieDetailCallback) {
-        String urlString = getDetailEndpoint(idMovie);
+    public static void getMovieDetail(final Movie movie, final UiWaitingCallback uiWaitingCallback, final MovieDetailCallback movieDetailCallback) {
+        String urlString = getDetailEndpoint(movie.id);
         try {
             new AsyncTask<URL, Void, MovieDetail>() {
                 @Override
@@ -33,6 +34,7 @@ public class MovieDetailModel extends BaseMovieModel {
 
                 @Override
                 protected void onPostExecute(MovieDetail movieDetail) {
+                    movieDetail.favorite = movie.favorite;
                     movieDetailCallback.callback(movieDetail);
                     uiWaitingCallback.callback(false);
                 }

@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +27,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private CollapsingToolbarLayout collapsingToolbar;
     private TextView textHeader;
     private TextView textOverview;
+    private ImageButton buttonMarkAsFavorite;
+    private TextView textMarkAsFavorite;
+
+//    private MovieDatabase movieDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +61,18 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         ConstraintLayout includedLayout = findViewById(R.id.include_collapsing_toolbar_detail);
         imageMoviePoster = includedLayout.findViewById(R.id.movie_poster_image);
         textHeader = includedLayout.findViewById(R.id.header_text);
+        View.OnClickListener favoriteListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onMarkAsFavorite();
+            }
+        };
+        buttonMarkAsFavorite = includedLayout.findViewById(R.id.favorite_button);
+        buttonMarkAsFavorite.setOnClickListener(favoriteListener);
+        textMarkAsFavorite = includedLayout.findViewById(R.id.favorite_text);
+        textMarkAsFavorite.setOnClickListener(favoriteListener);
 
-        NestedScrollView includedScroll = findViewById(R.id.include_body_detail);
+            NestedScrollView includedScroll = findViewById(R.id.include_body_detail);
         textOverview = includedScroll.findViewById(R.id.overview);
 
         collapsingToolbar = findViewById(R.id.collapsing_toolbar_layout);
@@ -93,4 +109,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override public CollapsingToolbarLayout getCollapsingToolbar() { return collapsingToolbar; }
 
     @Override public TextView getTextHeader() { return textHeader; }
+
+    @Override public ImageButton getMarkAsFavoriteButton() { return buttonMarkAsFavorite; }
 }

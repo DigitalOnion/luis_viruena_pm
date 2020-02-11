@@ -28,4 +28,7 @@ public class MovieDetail {
     public Boolean video;
     public Integer voteAverage;
     public Integer voteCount;
+
+    // for stage 2, the user can mark a movie as favorite. This is not a field from the API.
+    public boolean favorite;
 }

@@ -3,23 +3,32 @@ package com.outerspace.movies.model.api;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity(tableName = "movies")
 public class Movie implements Parcelable {
+
+    @PrimaryKey public Integer id;
+
     public Double popularity;
     public Integer voteCount;
     public Boolean video;
     public String posterPath;
-    public Integer id;
     public Boolean adult;
     public String backdropPath;
     public String originalLanguage;
     public String originalTitle;
-    public List<Integer> genreIds = null;
+    //public List<Integer> genreIds = null;
     public String title;
     public Integer voteAverage;
     public String overview;
     public String releaseDate;
+
+    // for stage 2, the user can mark a movie as favorite. This is not a field from the API.
+    public boolean favorite;
 
     public Movie() {
     }

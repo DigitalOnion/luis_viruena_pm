@@ -1,8 +1,13 @@
 package com.outerspace.movies.model;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.room.Room;
+
 import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.model.persistence.MovieDatabase;
+import com.outerspace.movies.model.persistence.MovieRepository;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,16 +66,16 @@ public class MovieModel extends BaseMovieModel {
     }
 
     private static List<Movie> getMovieListFromURL(URL movieUrl) {
-        List<Movie> movieList = new ArrayList<>();
+        final List<Movie> movieList = new ArrayList<>();
         try {
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(movieUrl);
             JSONObject json = new JSONObject(jsonResponse);
             JSONArray jsonArray = json.getJSONArray("results");
 
-            for(int iJson = 0; iJson < jsonArray.length(); iJson++) {
+            for (int iJson = 0; iJson < jsonArray.length(); iJson++) {
                 JSONObject jsonMovie = jsonArray.getJSONObject(iJson);
                 JSONArray fieldNames = jsonMovie.names();
-                Movie movie = new Movie();
+                final Movie movie = new Movie();
                 for (int iField = 0; iField < fieldNames.length(); iField++) {
                     String name = jsonMovie.names().get(iField).toString();
                     switch (name) {
@@ -117,6 +122,16 @@ public class MovieModel extends BaseMovieModel {
                 }
                 movieList.add(movie);
             }
+
+            for (final Movie movie : movieList) {
+                MovieRepository.getInstance().isFavoriteAsync(movie.id, new MovieRepository.MovieRepositoryCallback<Boolean>() {
+                    @Override
+                    public void call(Boolean favorite) {
+                        movie.favorite = favorite;
+                    }
+                });
+            }
+
             return movieList;
         } catch (JSONException | IOException e) {
             e.printStackTrace();
