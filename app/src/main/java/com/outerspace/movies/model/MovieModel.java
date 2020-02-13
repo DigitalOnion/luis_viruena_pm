@@ -1,12 +1,8 @@
 package com.outerspace.movies.model;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.room.Room;
-
 import com.outerspace.movies.model.api.Movie;
-import com.outerspace.movies.model.persistence.MovieDatabase;
 import com.outerspace.movies.model.persistence.MovieRepository;
 
 import org.json.JSONArray;

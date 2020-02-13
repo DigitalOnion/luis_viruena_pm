@@ -17,6 +17,7 @@ public class BaseMovieModel {
 
     private static final String DETAIL_ENDPOINT = "movie/";
     private static final String TRAILER_ENDPOINT = "movie/{movieId}/videos";
+    private static final String REVIEW_ENDPOINT = "movie/{movieId}/reviews";
 
     public static final String POSTER_BASE_URL = "http://image.tmdb.org/";
     public static final String POSTER_ENDPOINT = "t/p/";
@@ -38,6 +39,12 @@ public class BaseMovieModel {
 
     public static String getTrailersEndpoint(int idMovie) {
         return API_BASE_URL + TRAILER_ENDPOINT.replace("{movieId}", String.valueOf(idMovie)) + "?"
+                + getApiKey() + "&"
+                + getLanguage();
+    }
+
+    public static String getReviewEndpoint(int idMovie) {
+        return API_BASE_URL + REVIEW_ENDPOINT.replace("{movieId}", String.valueOf(idMovie)) + "?"
                 + getApiKey() + "&"
                 + getLanguage();
     }

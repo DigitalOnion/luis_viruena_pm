@@ -2,18 +2,17 @@ package com.outerspace.movies.model;
 
 import android.os.AsyncTask;
 
-import com.outerspace.movies.TrailerPresenter;
+import com.outerspace.movies.MediaPresenter;
 import com.outerspace.movies.model.api.Movie;
 import com.outerspace.movies.model.api.MovieDetail;
+import com.outerspace.movies.model.api.Review;
 import com.outerspace.movies.model.api.Trailer;
-import com.outerspace.movies.model.api.TrailerList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class MovieDetailModel extends BaseMovieModel {
         void callback(MovieDetail detail);
     }
 
-    public static void getMovieDetail(final Movie movie, final MovieDetailCallback movieDetailCallback) {
+    public static void fetchMovieDetail(final Movie movie, final MovieDetailCallback movieDetailCallback) {
         final String urlString = getDetailEndpoint(movie.id);
         new AsyncTask<String, Void, MovieDetail>() {
 
@@ -138,7 +137,7 @@ public class MovieDetailModel extends BaseMovieModel {
         return detail;
     }
 
-    public static void fetchTrailers(int movieId, final TrailerPresenter.TrailerCallback callback) {
+    public static void fetchTrailers(int movieId, final MediaPresenter.MediaCallback<Trailer> callback) {
         final String urlString = getTrailersEndpoint(movieId);
             new AsyncTask<String, Void, List<Trailer>>() {
 
@@ -210,5 +209,65 @@ public class MovieDetailModel extends BaseMovieModel {
             }
         }
         return trailerList;
+    }
+
+    public static void fetchReviews(int movieId, final MediaPresenter.MediaCallback<Review> callback) {
+        final String urlString = getReviewEndpoint(movieId);
+        new AsyncTask<String, Void, List<Review>>() {
+
+            Exception taskException = null;
+
+            @Override
+            protected List<Review> doInBackground(String... urlStrings) {
+                try {
+                    return getReviewListFromURL(new URL(urlStrings[0]));
+                } catch (IOException | JSONException e) {
+                    taskException = e;
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(List<Review> reviews) {
+                if(taskException == null) {
+                    callback.call(reviews);
+                } else {
+                    taskException.printStackTrace();
+                    // todo handle exception
+                }
+            }
+        }.execute(urlString);
+    }
+
+    private static List<Review> getReviewListFromURL(URL url) throws IOException, JSONException {
+        String jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
+        JSONObject jsonObjResponse = new JSONObject(jsonResponse);
+        JSONArray jsonReviews = jsonObjResponse.getJSONArray("results");
+
+        List<Review> reviewList = new ArrayList<>();
+        for(int i = 0; i < jsonReviews.length(); i++) {
+            JSONObject json = (JSONObject) jsonReviews.get(i);
+            Review review = new Review();
+            JSONArray names = json.names();
+            for(int iName = 0; iName < names.length(); iName++) {
+                String fieldName = names.get(iName).toString();
+                switch (fieldName) {
+                    case "id":
+                        review.id = json.getString(fieldName);
+                        break;
+                    case "author":
+                        review.author = json.getString(fieldName);
+                        break;
+                    case "content":
+                        review.content = json.getString(fieldName);
+                        break;
+                    case "url":
+                        review.url = json.getString(fieldName);
+                        break;
+                }
+            }
+            reviewList.add(review);
+        }
+        return reviewList;
     }
 }

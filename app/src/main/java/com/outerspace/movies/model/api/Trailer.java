@@ -1,6 +1,6 @@
 package com.outerspace.movies.model.api;
 
-public class Trailer {
+public class Trailer implements BaseMedia {
     public String id;
     public String iso6391;
     public String iso31661;

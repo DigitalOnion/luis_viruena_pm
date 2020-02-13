@@ -22,16 +22,19 @@ import android.widget.TextView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.outerspace.movies.model.MovieModel;
+import com.outerspace.movies.model.api.BaseMedia;
 import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.model.api.Review;
 import com.outerspace.movies.model.api.Trailer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView, TrailerView {
     public static final String URL_STRING = "url_string";
 
     private MovieDetailPresenter presenter;
-    private TrailerPresenter trailerPresenter;
+    private MediaPresenter mediaPresenter;
 
     private Toolbar toolbar;
     private ImageView imageMoviePoster;
@@ -43,7 +46,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private ProgressBar progressBar;
 
     private RecyclerView trailerRecycler;
-    private TrailerAdapter trailerAdapter;
+    private MediaAdapter mediaAdapter;
 
 //    private MovieDatabase movieDb;
 
@@ -60,15 +63,25 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         initReferences();
 
         presenter.presentMovieDetail(movie);
+        mediaPresenter = new MediaPresenter(this);
 
         trailerRecycler.setLayoutManager(new LinearLayoutManager(this));
-        trailerPresenter = new TrailerPresenter(this);
-        trailerPresenter.fetchTrailers(movie.id, new TrailerPresenter.TrailerCallback() {
+        mediaAdapter = new MediaAdapter(mediaPresenter);
+        trailerRecycler.setAdapter(mediaAdapter);
+        mediaPresenter.fetchTrailers(movie.id, new MediaPresenter.MediaCallback<Trailer>() {
             @Override
             public void call(List<Trailer> resultTrailerList) {
-                trailerAdapter = new TrailerAdapter(trailerPresenter);
-                trailerAdapter.setTrailerList(resultTrailerList);
-                trailerRecycler.setAdapter(trailerAdapter);
+                List<BaseMedia> list = new ArrayList<>();
+                for(Trailer trailer : resultTrailerList) list.add(trailer);
+                mediaAdapter.addAllMedia(list);
+            }
+        });
+        mediaPresenter.fetchReviews(movie.id, new MediaPresenter.MediaCallback<Review>() {
+            @Override
+            public void call(List<Review> resultReviewList) {
+                List<BaseMedia> list = new ArrayList<>();
+                for(Review review : resultReviewList) list.add(review);
+                mediaAdapter.addAllMedia(list);
             }
         });
     }
@@ -157,8 +170,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
             }
-
-
         }
     }
 }

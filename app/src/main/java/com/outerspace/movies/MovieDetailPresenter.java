@@ -7,23 +7,15 @@ import android.os.AsyncTask;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.outerspace.movies.model.MovieDetailModel;
 import com.outerspace.movies.model.MovieModel;
-import com.outerspace.movies.model.UiWaitingCallback;
 import com.outerspace.movies.model.api.Movie;
 import com.outerspace.movies.model.api.MovieDetail;
 import com.outerspace.movies.model.persistence.MovieRepository;
-
-import java.lang.ref.WeakReference;
 
 public class MovieDetailPresenter {
     MovieDetailView detailView;
@@ -72,7 +64,7 @@ public class MovieDetailPresenter {
 
         @Override
         protected void onPostExecute(Movie movie) {
-            MovieDetailModel.getMovieDetail(movie, detailCallback);
+            MovieDetailModel.fetchMovieDetail(movie, detailCallback);
         }
     }
 
