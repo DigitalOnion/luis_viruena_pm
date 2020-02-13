@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -151,9 +152,13 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                 break;
         }
         if(urlString != null) {
-            Intent intent = new Intent(this, DisplayTrailerActivity.class);
-            intent.putExtra(URL_STRING, urlString);
-            startActivity(intent);
+            Uri webpage = Uri.parse(urlString);
+            Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+
+
         }
     }
 }

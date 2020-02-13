@@ -205,7 +205,9 @@ public class MovieDetailModel extends BaseMovieModel {
                         break;
                 }
             }
-            trailerList.add(trailer);
+            if(trailer.site.equalsIgnoreCase( "YouTube") && trailer.type.equalsIgnoreCase("Trailer")) {
+                trailerList.add(trailer);
+            }
         }
         return trailerList;
     }

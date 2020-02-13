@@ -9,7 +9,6 @@ import java.util.List;
 public class TrailerPresenter {
     private TrailerView trailerView;
 
-
     public interface TrailerCallback {
         void call(List<Trailer> resultTrailerList);
     }
