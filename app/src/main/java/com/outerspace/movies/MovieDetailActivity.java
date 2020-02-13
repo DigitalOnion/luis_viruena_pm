@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +20,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.outerspace.movies.model.MovieModel;
 import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.model.api.Trailer;
 
-public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView {
+import java.util.List;
+
+public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView, TrailerView {
+    public static final String URL_STRING = "url_string";
+
     private MovieDetailPresenter presenter;
+    private TrailerPresenter trailerPresenter;
 
     private Toolbar toolbar;
     private ImageView imageMoviePoster;
@@ -31,6 +40,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private ImageButton buttonMarkAsFavorite;
     private TextView textMarkAsFavorite;
     private ProgressBar progressBar;
+
+    private RecyclerView trailerRecycler;
+    private TrailerAdapter trailerAdapter;
 
 //    private MovieDatabase movieDb;
 
@@ -47,6 +59,17 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         initReferences();
 
         presenter.presentMovieDetail(movie);
+
+        trailerRecycler.setLayoutManager(new LinearLayoutManager(this));
+        trailerPresenter = new TrailerPresenter(this);
+        trailerPresenter.fetchTrailers(movie.id, new TrailerPresenter.TrailerCallback() {
+            @Override
+            public void call(List<Trailer> resultTrailerList) {
+                trailerAdapter = new TrailerAdapter(trailerPresenter);
+                trailerAdapter.setTrailerList(resultTrailerList);
+                trailerRecycler.setAdapter(trailerAdapter);
+            }
+        });
     }
 
     private void setupActionBar() {
@@ -74,8 +97,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         textMarkAsFavorite = includedLayout.findViewById(R.id.favorite_text);
         textMarkAsFavorite.setOnClickListener(favoriteListener);
 
-            NestedScrollView includedScroll = findViewById(R.id.include_body_detail);
+        NestedScrollView includedScroll = findViewById(R.id.include_body_detail);
         textOverview = includedScroll.findViewById(R.id.overview);
+        trailerRecycler = includedScroll.findViewById(R.id.trailer_recycler);
 
         collapsingToolbar = findViewById(R.id.collapsing_toolbar_layout);
         progressBar = findViewById(R.id.progress);
@@ -116,4 +140,20 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override public ImageButton getMarkAsFavoriteButton() { return buttonMarkAsFavorite; }
 
     @Override public ProgressBar getProgressBar() { return progressBar; }
+
+    @Override
+    public void showTrailer(Trailer trailer) {
+        // https://www.youtube.com/watch?v=SYLQdxec5lM
+        String urlString = null;
+        switch (trailer.site.toUpperCase()) {
+            case "YOUTUBE":
+                urlString = MovieModel.getYoutubeEndpoint(trailer.key);
+                break;
+        }
+        if(urlString != null) {
+            Intent intent = new Intent(this, DisplayTrailerActivity.class);
+            intent.putExtra(URL_STRING, urlString);
+            startActivity(intent);
+        }
+    }
 }

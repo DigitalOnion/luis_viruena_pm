@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.room.Room;
 
+import com.outerspace.movies.TrailerPresenter;
 import com.outerspace.movies.model.MovieModel;
 import com.outerspace.movies.model.UiWaitingCallback;
 import com.outerspace.movies.model.api.Movie;
@@ -132,4 +133,5 @@ public class MovieRepository {
     public static void clearAllMoviesAsync() {
         new ClearAllMoviesTask().execute();
     }
+
 }

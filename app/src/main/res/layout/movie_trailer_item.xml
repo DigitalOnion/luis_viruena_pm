@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/trailer_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/trailer_play"
+        android:src="@drawable/ic_play_arrow"
+        android:layout_width="@dimen/trailer_play"
+        android:layout_height="@dimen/trailer_play"
+        android:padding="@dimen/trailer_padding"
+        android:clickable="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/trailer_title"
+        tools:text="Best Trailer Ever"
+        style="@style/details_overview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/wide_margin"
+        android:clickable="false"
+        app:layout_constraintTop_toTopOf="@id/trailer_play"
+        app:layout_constraintBottom_toBottomOf="@id/trailer_play"
+        app:layout_constraintLeft_toRightOf="@id/trailer_play"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_line"
+        android:background="@color/trailer_play_color"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

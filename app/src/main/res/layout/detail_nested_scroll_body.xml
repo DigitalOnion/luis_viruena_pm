@@ -13,13 +13,26 @@
     tools:showIn="@layout/activity_main"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/overview"
+    <LinearLayout
+        android:id="@+id/embedded_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/normal_margin"
-        style="@style/details_overview"
-        tools:text = "@string/lorem_ipsum"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            style="@style/details_overview"
+            tools:text = "@string/lorem_ipsum"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trailer_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

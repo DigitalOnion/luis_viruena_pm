@@ -7,4 +7,6 @@
     <color name="dark_gray">@android:color/darker_gray</color>
     <color name="movie_red">#FF0000</color>
     <color name="movie_gray">#CCCCCC</color>
+
+    <color name="trailer_play_color">#333399</color>
 </resources>

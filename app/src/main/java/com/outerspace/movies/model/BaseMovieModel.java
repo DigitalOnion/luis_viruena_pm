@@ -16,10 +16,12 @@ public class BaseMovieModel {
     public static final String POPULAR_ENDPOINT = "movie/popular";
 
     private static final String DETAIL_ENDPOINT = "movie/";
+    private static final String TRAILER_ENDPOINT = "movie/{movieId}/videos";
 
     public static final String POSTER_BASE_URL = "http://image.tmdb.org/";
     public static final String POSTER_ENDPOINT = "t/p/";
 
+    public static final String YOUTUBE_ENDPOINT = "https://www.youtube.com/watch";
 
     public static String getApiKey() { return API_KEY + "=" + API_KEY_VALUE; }
 
@@ -32,5 +34,17 @@ public class BaseMovieModel {
                 + getApiKey() + "&"
                 + getLanguage() + "&"
                 + getPage(1);
+    }
+
+    public static String getTrailersEndpoint(int idMovie) {
+        return API_BASE_URL + TRAILER_ENDPOINT.replace("{movieId}", String.valueOf(idMovie)) + "?"
+                + getApiKey() + "&"
+                + getLanguage();
+    }
+
+    public static String getYoutubeEndpoint(String youtubeKey) {
+        // https://www.youtube.com/watch?v=SYLQdxec5lM
+        return YOUTUBE_ENDPOINT + "?"
+                + "v=" + youtubeKey;
     }
 }

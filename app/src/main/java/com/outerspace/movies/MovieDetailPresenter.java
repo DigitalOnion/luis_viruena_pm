@@ -29,14 +29,6 @@ public class MovieDetailPresenter {
     MovieDetailView detailView;
     Movie movie;
 
-//    private final UiWaitingCallback waitingCallback = new UiWaitingCallback() {
-//        @Override
-//        public void callback(boolean uiWaiting) {
-//            // Todo: Implement
-//        }
-//    };
-
-
     private void activateProgressBar(boolean active) {
         detailView.getProgressBar().setVisibility(active ? View.VISIBLE : View.INVISIBLE);
     }
