@@ -12,11 +12,12 @@ import java.util.List;
 
 public class MovieRepository {
     private static final String MOVIE_DB_NAME = "movieDatabase";
-    private static MovieDatabase movieDatabase = null;
+    protected static MovieDatabase movieDatabase = null;
 
-    private static MovieRepository instance = new MovieRepository();       // singleton only instance
+    protected static MovieRepository instance = new MovieRepository();       // singleton only instance
 
-    private MovieRepository() { }       // singleton private constructor
+    protected MovieRepository() {
+    }       // singleton private constructor
 
     public static void initialize(Context context) {
         movieDatabase = Room.databaseBuilder(context, MovieDatabase.class, MOVIE_DB_NAME).build();
@@ -80,7 +81,7 @@ public class MovieRepository {
         return movieDatabase.movieDao().isFavoriteMovie(movieId);
     }
 
-    private static class FlipFavoriteTask extends AsyncTask<Integer, Void, Boolean> {
+    private static class FlipFavoriteTask extends AsyncTask<Movie, Void, Boolean> {
         MovieRepositoryCallback<Boolean> callback;
 
         public FlipFavoriteTask(MovieRepositoryCallback<Boolean> callback) {
@@ -88,8 +89,14 @@ public class MovieRepository {
         }
 
         @Override
-        protected Boolean doInBackground(Integer... integers) {
-            return MovieRepository.getInstance().flipFavorite(integers[0]);
+        protected Boolean doInBackground(Movie... movies) {
+            Movie movie = movies[0];
+            if(!movieDatabase.movieDao().isMovieInDB(movie.id)) {
+                movieDatabase.movieDao().insert(movie);
+            }
+            movie.favorite = !movie.favorite;
+            movieDatabase.movieDao().updateFavorite(movie.id, movie.favorite);
+            return movie.favorite;
         }
 
         @Override
@@ -98,18 +105,12 @@ public class MovieRepository {
         }
     }
 
-    public void flipFavoriteAsync(int movieId, MovieRepositoryCallback<Boolean> callback) {
-        (new FlipFavoriteTask(callback)).execute(movieId);
-    }
-
-    public boolean flipFavorite(int movieId) {
-        boolean favorite = !movieDatabase.movieDao().isFavoriteMovie(movieId);
-        movieDatabase.movieDao().updateFavorite(movieId, favorite);
-        return favorite;
+    public void flipFavoriteAsync(Movie movie, MovieRepositoryCallback<Boolean> callback) {
+        (new FlipFavoriteTask(callback)).execute(movie);
     }
 
     public boolean isMovieStored(int movieId) {
-         return movieDatabase.movieDao().isMovieInDB(movieId);
+        return movieDatabase.movieDao().isMovieInDB(movieId);
     }
 
     public Movie getMovieFromId(int movieId) {
@@ -118,7 +119,13 @@ public class MovieRepository {
 
     public void insert(Movie movie) {
         movieDatabase.movieDao().insert(movie);
-    };
+    }
+
+    ;
+
+    public void delete(Movie movie) {
+        movieDatabase.movieDao().delete(movie);
+    }
 
     private static class ClearAllMoviesTask extends AsyncTask<Void, Void, Void> {
         @Override

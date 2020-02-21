@@ -23,16 +23,15 @@ public class MovieDetailModel extends BaseMovieModel {
     }
 
     public static void fetchMovieDetail(final Movie movie, final MovieDetailCallback movieDetailCallback) {
-        final String urlString = getDetailEndpoint(movie.id);
-        new AsyncTask<String, Void, MovieDetail>() {
+        new AsyncTask<Integer, Void, MovieDetail>() {
 
             Exception taskException = null;
 
             @Override
-            protected MovieDetail doInBackground(String... urlStrings) {
-
+            protected MovieDetail doInBackground(Integer... movieIds) {
                 try {
-                    return getMovieDetailFromURL(new URL(urlStrings[0]));
+                    MovieDetail detail = getMovieDetailFromURL(new URL(getDetailEndpoint(movieIds[0])));
+                    return detail;
                 } catch (JSONException | IOException  e) {
                     taskException = e;
                     return null;
@@ -42,14 +41,13 @@ public class MovieDetailModel extends BaseMovieModel {
             @Override
             protected void onPostExecute(MovieDetail movieDetail) {
                 if(taskException == null) {
-                    movieDetail.favorite = movie.favorite;
                     movieDetailCallback.callback(movieDetail);
                 } else {
                     taskException.printStackTrace();
                     // todo handle exception
                 }
             }
-        }.execute(urlString);
+        }.execute(movie.id);
     }
 
     private static MovieDetail getMovieDetailFromURL(URL url) throws JSONException, IOException {

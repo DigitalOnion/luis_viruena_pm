@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.outerspace.movies.model.persistence.MovieDatabase;
 
 public interface MovieDetailView {
     Toolbar getToolbar();

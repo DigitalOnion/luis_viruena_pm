@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
@@ -25,40 +26,34 @@ public class MovieDetailPresenter {
         detailView.getProgressBar().setVisibility(active ? View.VISIBLE : View.INVISIBLE);
     }
 
-    private final MovieDetailModel.MovieDetailCallback detailCallback = new MovieDetailModel.MovieDetailCallback() {
-        @Override
-        public void callback(MovieDetail detail) {
-            chooseMarkedAsFavoriteIcon(detailView, detail.favorite);
-            initValues(detail);
-            activateProgressBar(false);
-        }
-    };
-
-
     public MovieDetailPresenter(MovieDetailView detailView) {
         this.detailView = detailView;
     }
 
-    static class PresentMovieDetailTask extends AsyncTask<Movie, Void, Movie> {
-        private MovieDetailView detailView;
-        private Movie movie;
+    static class persistMovieTask extends AsyncTask<Movie, Void, Movie> {
         private MovieDetailModel.MovieDetailCallback detailCallback;
 
-        public PresentMovieDetailTask(MovieDetailView detailView, Movie movie, MovieDetailModel.MovieDetailCallback detailCallback) {
-            this.detailView = detailView;
-            this.movie = movie;
+        public persistMovieTask(MovieDetailModel.MovieDetailCallback detailCallback) {
             this.detailCallback = detailCallback;
         }
 
         @Override
         protected Movie doInBackground(Movie... movies) {
             Movie movie = movies[0];
-            if (MovieRepository.getInstance().isMovieStored(movie.id)) {
-                movie = MovieRepository.getInstance().getMovieFromId(movie.id);
+            boolean favorite;
+            boolean isStored = MovieRepository.getInstance().isMovieStored(movie.id);
+            if (isStored) {     // recover favorite value
+                favorite = MovieRepository.getInstance().isFavorite(movie.id);
             } else {
-                MovieRepository.getInstance().insert(movie);
-                MovieRepository.getInstance().flipFavorite(movie.id);
+                favorite = movie.favorite;
             }
+
+            if (isStored) {
+                MovieRepository.getInstance().delete(movie);  // remove previous version of the movie
+            }
+            movie.favorite = favorite;      // keeps movie favorite value
+            MovieRepository.getInstance().insert(movie);
+
             return movie;
         }
 
@@ -68,11 +63,27 @@ public class MovieDetailPresenter {
         }
     }
 
+    //static class chooseFavoriteTask extends
+
     void presentMovieDetail(Movie movie) {
         activateProgressBar(true);
         this.movie = movie;
-        PresentMovieDetailTask task = new PresentMovieDetailTask(detailView, movie, detailCallback);
+        persistMovieTask task = new persistMovieTask(new MovieDetailModel.MovieDetailCallback() {
+            @Override
+            public void callback(MovieDetail detail) {
+                initValues(detail);
+                activateProgressBar(false);
+            }
+        });
         task.execute(movie);
+
+        MovieRepository.getInstance().isFavoriteAsync(movie.id, new MovieRepository.MovieRepositoryCallback <Boolean> () {
+            @Override
+            public void call (Boolean favorite){
+                chooseMarkedAsFavoriteIcon(detailView, favorite);
+            }
+        });
+
         chooseMarkedAsFavoriteIcon(detailView, movie.favorite);
     }
 
@@ -121,9 +132,10 @@ public class MovieDetailPresenter {
     }
 
     public void onMarkAsFavorite() {
-        MovieRepository.getInstance().flipFavoriteAsync(movie.id, new MovieRepository.MovieRepositoryCallback <Boolean> () {
+        MovieRepository.getInstance().flipFavoriteAsync(movie, new MovieRepository.MovieRepositoryCallback <Boolean> () {
             @Override
             public void call (Boolean favorite){
+                Log.d("Luis", favorite ? "favorite" : "not favorite");
                 movie.favorite = favorite;
                 chooseMarkedAsFavoriteIcon(detailView, movie.favorite);
             }

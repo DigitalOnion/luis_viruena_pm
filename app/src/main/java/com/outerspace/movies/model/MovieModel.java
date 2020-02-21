@@ -65,52 +65,7 @@ public class MovieModel extends BaseMovieModel {
 
             for (int iJson = 0; iJson < jsonArray.length(); iJson++) {
                 JSONObject jsonMovie = jsonArray.getJSONObject(iJson);
-                JSONArray fieldNames = jsonMovie.names();
-                final Movie movie = new Movie();
-                for (int iField = 0; iField < fieldNames.length(); iField++) {
-                    String name = jsonMovie.names().get(iField).toString();
-                    switch (name) {
-                        case "popularity":
-                            movie.popularity = jsonMovie.getDouble(name);
-                            break;
-                        case "vote_count":
-                            movie.voteCount = jsonMovie.getInt(name);
-                            break;
-                        case "video":
-                            movie.video = jsonMovie.getBoolean(name);
-                            break;
-                        case "poster_path":
-                            movie.posterPath = jsonMovie.getString(name);
-                            break;
-                        case "id":
-                            movie.id = jsonMovie.getInt(name);
-                            break;
-                        case "adult":
-                            movie.adult = jsonMovie.getBoolean(name);
-                            break;
-                        case "backdrop_path":
-                            movie.backdropPath = jsonMovie.getString(name);
-                            break;
-                        case "original_language":
-                            movie.originalLanguage = jsonMovie.getString(name);
-                            break;
-                        case "original_title":
-                            movie.originalTitle = jsonMovie.getString(name);
-                            break;
-                        case "title":
-                            movie.title = jsonMovie.getString(name);
-                            break;
-                        case "vote_average":
-                            movie.voteAverage = jsonMovie.getInt(name);
-                            break;
-                        case "overview":
-                            movie.overview = jsonMovie.getString(name);
-                            break;
-                        case "release_date":
-                            movie.releaseDate = jsonMovie.getString(name);
-                            break;
-                    }
-                }
+                Movie movie = getMovieFromJson(jsonMovie);
                 movieList.add(movie);
             }
 
@@ -129,6 +84,56 @@ public class MovieModel extends BaseMovieModel {
         }
 
         return movieList;
+    }
+
+    static Movie getMovieFromJson (JSONObject jsonMovie) throws JSONException {  // package scope is needed for unit test
+        JSONArray fieldNames = jsonMovie.names();
+        final Movie movie = new Movie();
+        for (int iField = 0; iField < fieldNames.length(); iField++) {
+            String name = jsonMovie.names().get(iField).toString();
+            switch (name) {
+                case "popularity":
+                    movie.popularity = jsonMovie.getDouble(name);
+                    break;
+                case "vote_count":
+                    movie.voteCount = jsonMovie.getInt(name);
+                    break;
+                case "video":
+                    movie.video = jsonMovie.getBoolean(name);
+                    break;
+                case "poster_path":
+                    movie.posterPath = jsonMovie.getString(name);
+                    break;
+                case "id":
+                    movie.id = jsonMovie.getInt(name);
+                    break;
+                case "adult":
+                    movie.adult = jsonMovie.getBoolean(name);
+                    break;
+                case "backdrop_path":
+                    movie.backdropPath = jsonMovie.getString(name);
+                    break;
+                case "original_language":
+                    movie.originalLanguage = jsonMovie.getString(name);
+                    break;
+                case "original_title":
+                    movie.originalTitle = jsonMovie.getString(name);
+                    break;
+                case "title":
+                    movie.title = jsonMovie.getString(name);
+                    break;
+                case "vote_average":
+                    movie.voteAverage = jsonMovie.getInt(name);
+                    break;
+                case "overview":
+                    movie.overview = jsonMovie.getString(name);
+                    break;
+                case "release_date":
+                    movie.releaseDate = jsonMovie.getString(name);
+                    break;
+            }
+        }
+        return movie;
     }
 
     public static String getPosterPathURL(String posterPath) {

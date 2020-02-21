@@ -3,6 +3,7 @@ package com.outerspace.movies.model.api;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -31,6 +32,28 @@ public class Movie implements Parcelable {
     public boolean favorite;
 
     public Movie() {
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj == this) return true;
+        if(!(obj instanceof Movie)) return false;
+
+        Movie otherMovie = (Movie) obj;
+        if(!(id == otherMovie.id)) return false;
+        if(!(popularity == otherMovie.popularity)) return false;
+        if(!(voteCount == otherMovie.voteCount)) return false;
+        if(!(video == otherMovie.video)) return false;
+        if(!(posterPath == otherMovie.posterPath)) return false;
+        if(!(adult == otherMovie.adult)) return false;
+        if(!(backdropPath.equals(otherMovie.backdropPath))) return false;
+        if(!(originalLanguage.equals(otherMovie.originalLanguage))) return false;
+        if(!(originalTitle.equals(otherMovie.originalTitle))) return false;
+        if(!(title.equals(otherMovie.title))) return false;
+        if(!(voteAverage.equals(otherMovie.voteAverage))) return false;
+        if(!(overview.equals(otherMovie.overview))) return false;
+        if(!(releaseDate.equals(otherMovie.releaseDate))) return false;
+        return true;
     }
 
     // Automatic implementation of Parcelable by Android Studio.

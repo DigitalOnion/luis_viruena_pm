@@ -8,7 +8,7 @@ public class BaseMovieModel {
     public static final String LANGUAGE = "language";
     public static final String PAGE = "page";
 
-    public static final String API_KEY_VALUE = "enter-here-your-api-key";
+    public static final String API_KEY_VALUE = "place_here_your_api_key";
     public static final String US_ENGLISH = "en-US";
 
     public static final String API_BASE_URL = "https://api.themoviedb.org/3/";

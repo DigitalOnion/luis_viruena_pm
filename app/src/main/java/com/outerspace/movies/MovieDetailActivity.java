@@ -1,6 +1,5 @@
 package com.outerspace.movies;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView, TrailerView {
-    public static final String URL_STRING = "url_string";
-
     private MovieDetailPresenter presenter;
     private MediaPresenter mediaPresenter;
 
@@ -47,8 +42,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     private RecyclerView trailerRecycler;
     private MediaAdapter mediaAdapter;
-
-//    private MovieDatabase movieDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,22 +110,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         collapsingToolbar = findViewById(R.id.collapsing_toolbar_layout);
         progressBar = findViewById(R.id.progress);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.details_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        switch (itemId) {
-            case R.id.details_option:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
