@@ -19,10 +19,14 @@ import android.widget.TextView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.outerspace.movies.model.MovieModel;
-import com.outerspace.movies.model.api.BaseMedia;
-import com.outerspace.movies.model.api.Movie;
-import com.outerspace.movies.model.api.Review;
-import com.outerspace.movies.model.api.Trailer;
+import com.outerspace.movies.api.BaseMedia;
+import com.outerspace.movies.api.Movie;
+import com.outerspace.movies.api.Review;
+import com.outerspace.movies.api.Trailer;
+import com.outerspace.movies.view.MediaPresenter;
+import com.outerspace.movies.view.MovieDetailPresenter;
+import com.outerspace.movies.view.MovieDetailView;
+import com.outerspace.movies.view.TrailerView;
 
 import java.util.ArrayList;
 import java.util.List;

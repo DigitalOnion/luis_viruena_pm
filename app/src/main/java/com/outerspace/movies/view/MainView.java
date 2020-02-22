@@ -1,4 +1,4 @@
-package com.outerspace.movies;
+package com.outerspace.movies.view;
 
 import android.content.Context;
 import android.widget.ProgressBar;

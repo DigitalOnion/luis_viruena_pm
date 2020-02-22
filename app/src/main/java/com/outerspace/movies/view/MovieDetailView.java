@@ -1,4 +1,4 @@
-package com.outerspace.movies;
+package com.outerspace.movies.view;
 
 import android.widget.ImageButton;
 import android.widget.ImageView;

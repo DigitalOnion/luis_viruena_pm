@@ -5,7 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.api.Movie;
 
 import java.util.List;
 

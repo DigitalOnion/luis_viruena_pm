@@ -1,30 +1,17 @@
 package com.outerspace.movies.model;
 
-import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.room.DatabaseConfiguration;
-import androidx.room.InvalidationTracker;
-import androidx.room.Room;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
-import androidx.test.core.app.ApplicationProvider;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
-import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.api.Movie;
 import com.outerspace.movies.model.persistence.MovieDao;
 import com.outerspace.movies.model.persistence.MovieDatabase;
 import com.outerspace.movies.model.persistence.MovieRepository;

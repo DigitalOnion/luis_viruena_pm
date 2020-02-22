@@ -8,8 +8,9 @@ import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 
 import com.outerspace.movies.model.MovieModel;
-import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.api.Movie;
 import com.outerspace.movies.model.persistence.MovieRepository;
+import com.outerspace.movies.view.MainView;
 
 import java.util.List;
 

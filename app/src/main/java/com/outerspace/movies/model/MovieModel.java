@@ -2,7 +2,7 @@ package com.outerspace.movies.model;
 
 import android.os.AsyncTask;
 
-import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.api.Movie;
 import com.outerspace.movies.model.persistence.MovieRepository;
 
 import org.json.JSONArray;

@@ -1,4 +1,4 @@
-package com.outerspace.movies.model.api;
+package com.outerspace.movies.api;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,8 +6,6 @@ import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.util.List;
 
 @Entity(tableName = "movies")
 public class Movie implements Parcelable {

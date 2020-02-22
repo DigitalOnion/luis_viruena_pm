@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.outerspace.movies.model.MovieModel;
-import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.api.Movie;
 
 import java.util.List;
 

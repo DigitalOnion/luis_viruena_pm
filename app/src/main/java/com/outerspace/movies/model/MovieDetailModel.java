@@ -2,11 +2,11 @@ package com.outerspace.movies.model;
 
 import android.os.AsyncTask;
 
-import com.outerspace.movies.MediaPresenter;
-import com.outerspace.movies.model.api.Movie;
-import com.outerspace.movies.model.api.MovieDetail;
-import com.outerspace.movies.model.api.Review;
-import com.outerspace.movies.model.api.Trailer;
+import com.outerspace.movies.view.MediaPresenter;
+import com.outerspace.movies.api.Movie;
+import com.outerspace.movies.api.MovieDetail;
+import com.outerspace.movies.api.Review;
+import com.outerspace.movies.api.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;

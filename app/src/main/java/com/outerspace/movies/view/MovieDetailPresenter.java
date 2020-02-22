@@ -1,4 +1,4 @@
-package com.outerspace.movies;
+package com.outerspace.movies.view;
 
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -12,11 +12,14 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.outerspace.movies.MovieDetailActivity;
+import com.outerspace.movies.R;
 import com.outerspace.movies.model.MovieDetailModel;
 import com.outerspace.movies.model.MovieModel;
-import com.outerspace.movies.model.api.Movie;
-import com.outerspace.movies.model.api.MovieDetail;
+import com.outerspace.movies.api.Movie;
+import com.outerspace.movies.api.MovieDetail;
 import com.outerspace.movies.model.persistence.MovieRepository;
+import com.outerspace.movies.view.MovieDetailView;
 
 public class MovieDetailPresenter {
     MovieDetailView detailView;
@@ -65,7 +68,7 @@ public class MovieDetailPresenter {
 
     //static class chooseFavoriteTask extends
 
-    void presentMovieDetail(Movie movie) {
+    public void presentMovieDetail(Movie movie) {
         activateProgressBar(true);
         this.movie = movie;
         persistMovieTask task = new persistMovieTask(new MovieDetailModel.MovieDetailCallback() {

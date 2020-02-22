@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import androidx.room.Room;
 
 import com.outerspace.movies.model.MovieModel;
-import com.outerspace.movies.model.api.Movie;
+import com.outerspace.movies.api.Movie;
 
 import java.util.List;
 

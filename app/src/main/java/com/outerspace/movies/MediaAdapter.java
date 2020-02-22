@@ -9,9 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.outerspace.movies.model.api.BaseMedia;
-import com.outerspace.movies.model.api.Review;
-import com.outerspace.movies.model.api.Trailer;
+import com.outerspace.movies.api.BaseMedia;
+import com.outerspace.movies.api.Review;
+import com.outerspace.movies.api.Trailer;
+import com.outerspace.movies.view.MediaPresenter;
 
 import java.util.ArrayList;
 import java.util.List;

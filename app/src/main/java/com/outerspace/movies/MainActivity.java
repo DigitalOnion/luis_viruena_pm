@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.outerspace.movies.model.persistence.MovieRepository;
+import com.outerspace.movies.view.MainView;
 
 public class MainActivity extends AppCompatActivity implements MainView {
     private static final int GRID_COLUMN_COUNT = 3;
