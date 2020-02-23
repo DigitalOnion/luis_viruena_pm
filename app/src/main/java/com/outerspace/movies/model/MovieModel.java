@@ -2,6 +2,8 @@ package com.outerspace.movies.model;
 
 import android.os.AsyncTask;
 
+import androidx.core.util.Consumer;
+
 import com.outerspace.movies.api.Movie;
 import com.outerspace.movies.model.persistence.MovieRepository;
 
@@ -21,23 +23,23 @@ public class MovieModel extends BaseMovieModel {
         void callback(List<Movie> movieListResult);
     }
 
-    public static void getPopularMovies(MovieCallback movieCallback) {
-        getMovieList(movieCallback,
+    public static void getPopularMovies(Consumer<List<Movie>> movieConsumer) {
+        getMovieList(movieConsumer,
                 API_BASE_URL + POPULAR_ENDPOINT + "?"
                         + getApiKey() + "&"
                         + getLanguage() + "&"
                         + getPage(1));
     }
 
-    public static void getTopRatedMovies(MovieCallback movieCallback) {
-        getMovieList(movieCallback,
+    public static void getTopRatedMovies(Consumer<List<Movie>> movieConsumer) {
+        getMovieList(movieConsumer,
                 API_BASE_URL + TOP_RATED_ENDPOINT + "?"
                         + getApiKey() + "&"
                         + getLanguage() + "&"
                         + getPage(1));
     }
 
-    private static void getMovieList(final MovieCallback movieCallback, String urlString) {
+    private static void getMovieList(final Consumer<List<Movie>> movieConsumer, String urlString) {
         try {
             new AsyncTask<URL, Void, List<Movie>>() {
 
@@ -48,7 +50,7 @@ public class MovieModel extends BaseMovieModel {
 
                 @Override
                 protected void onPostExecute(List<Movie> movieList) {
-                    movieCallback.callback(movieList);
+                    movieConsumer.accept(movieList);
                 }
             }.execute(new URL(urlString));
         } catch (MalformedURLException e) {

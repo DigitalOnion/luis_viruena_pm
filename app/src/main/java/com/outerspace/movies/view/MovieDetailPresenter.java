@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
@@ -19,7 +20,6 @@ import com.outerspace.movies.model.MovieModel;
 import com.outerspace.movies.api.Movie;
 import com.outerspace.movies.api.MovieDetail;
 import com.outerspace.movies.model.persistence.MovieRepository;
-import com.outerspace.movies.view.MovieDetailView;
 
 public class MovieDetailPresenter {
     MovieDetailView detailView;
@@ -80,9 +80,9 @@ public class MovieDetailPresenter {
         });
         task.execute(movie);
 
-        MovieRepository.getInstance().isFavoriteAsync(movie.id, new MovieRepository.MovieRepositoryCallback <Boolean> () {
+        MovieRepository.getInstance().isFavoriteAsync(movie.id, new MovieRepository.MovieRepositoryCallback<Boolean>() {
             @Override
-            public void call (Boolean favorite){
+            public void call(Boolean favorite) {
                 chooseMarkedAsFavoriteIcon(detailView, favorite);
             }
         });
@@ -104,7 +104,6 @@ public class MovieDetailPresenter {
         String buffer;
         int start, end;
         SpannableStringBuilder spanBuilder = new SpannableStringBuilder();
-        //StyleSpan span = new StyleSpan(R.style.details_release_date);
         StyleSpan spanBold = new StyleSpan(Typeface.BOLD);
         StyleSpan spanItalic = new StyleSpan(Typeface.ITALIC);
 
@@ -128,16 +127,23 @@ public class MovieDetailPresenter {
     private void chooseMarkedAsFavoriteIcon(MovieDetailView detailView, boolean favorite) {
         Resources resources = ((MovieDetailActivity) detailView).getResources();
         Resources.Theme theme = ((MovieDetailActivity) detailView).getBaseContext().getTheme();
-        Drawable drawable = resources.getDrawable(favorite
-                ? R.drawable.ic_favorite
-                : R.drawable.ic_favorite_border);
+        Drawable drawable;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable = resources.getDrawable((favorite
+                    ? R.drawable.ic_favorite
+                    : R.drawable.ic_favorite_border), theme);
+        } else {
+            drawable = resources.getDrawable((favorite
+                    ? R.drawable.ic_favorite
+                    : R.drawable.ic_favorite_border));
+        }
         detailView.getMarkAsFavoriteButton().setImageDrawable(drawable);
     }
 
     public void onMarkAsFavorite() {
-        MovieRepository.getInstance().flipFavoriteAsync(movie, new MovieRepository.MovieRepositoryCallback <Boolean> () {
+        MovieRepository.getInstance().flipFavoriteAsync(movie, new MovieRepository.MovieRepositoryCallback<Boolean>() {
             @Override
-            public void call (Boolean favorite){
+            public void call(Boolean favorite) {
                 Log.d("Luis", favorite ? "favorite" : "not favorite");
                 movie.favorite = favorite;
                 chooseMarkedAsFavoriteIcon(detailView, movie.favorite);

@@ -3,9 +3,9 @@ package com.outerspace.movies.model.persistence;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.core.util.Consumer;
 import androidx.room.Room;
 
-import com.outerspace.movies.model.MovieModel;
 import com.outerspace.movies.api.Movie;
 
 import java.util.List;
@@ -32,10 +32,10 @@ public class MovieRepository {
     }
 
     private static class SelectFavoritesTask extends AsyncTask<Void, Void, List<Movie>> {
-        MovieModel.MovieCallback movieCallback;
+        Consumer<List<Movie>> movieConsumer;
 
-        public SelectFavoritesTask(MovieModel.MovieCallback movieCallback) {
-            this.movieCallback = movieCallback;
+        public SelectFavoritesTask(Consumer<List<Movie>> movieConsumer) {
+            this.movieConsumer = movieConsumer;
         }
 
         @Override
@@ -45,12 +45,12 @@ public class MovieRepository {
 
         @Override
         protected void onPostExecute(List<Movie> movies) {
-            movieCallback.callback(movies);
+            movieConsumer.accept(movies);
         }
     }
 
-    public static void getFavoriteMovies(MovieModel.MovieCallback movieCallback) {
-        SelectFavoritesTask task = new SelectFavoritesTask(movieCallback);
+    public static void getFavoriteMovies(Consumer<List<Movie>> movieConsumer) {
+        SelectFavoritesTask task = new SelectFavoritesTask(movieConsumer);
         task.execute();
     }
 
@@ -128,15 +128,26 @@ public class MovieRepository {
     }
 
     private static class ClearAllMoviesTask extends AsyncTask<Void, Void, Void> {
+        Consumer<Void> consumer;
+
+        ClearAllMoviesTask(Consumer<Void> consumer) {
+            this.consumer = consumer;
+        }
+
         @Override
         protected Void doInBackground(Void... voids) {
             movieDatabase.movieDao().clearAllMovies();
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            consumer.accept(aVoid);
+        }
     }
 
-    public static void clearAllMoviesAsync() {
-        new ClearAllMoviesTask().execute();
+    public static void clearAllMoviesAsync(Consumer consumer) {
+        new ClearAllMoviesTask(consumer).execute();
     }
 
 }

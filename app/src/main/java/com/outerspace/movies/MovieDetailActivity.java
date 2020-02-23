@@ -31,6 +31,8 @@ import com.outerspace.movies.view.TrailerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.outerspace.movies.MainActivity.MOVIE;
+
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView, TrailerView {
     private MovieDetailPresenter presenter;
     private MediaPresenter mediaPresenter;
@@ -53,7 +55,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         setContentView(R.layout.activity_movie_detail);
 
         Intent intent = getIntent();
-        Movie movie = intent.getParcelableExtra(MainPresenter.MOVIE);
+        Movie movie = intent.getParcelableExtra(MOVIE);
         presenter = new MovieDetailPresenter(this);
 
         setupActionBar();
